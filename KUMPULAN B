@@ -1,0 +1,120 @@
+import ipywidgets as widgets
+from IPython.display import display, clear_output
+import matplotlib.pyplot as plt
+
+# Output
+output = widgets.Output()
+
+# Input
+nama = widgets.Text(
+    description="Nama:"
+)
+
+matematik = widgets.IntSlider(
+    value=0,
+    min=0,
+    max=100,
+    description="Math"
+)
+
+sains = widgets.IntSlider(
+    value=0,
+    min=0,
+    max=100,
+    description="Sains"
+)
+
+english = widgets.IntSlider(
+    value=0,
+    min=0,
+    max=100,
+    description="English"
+)
+
+button = widgets.Button(
+    description="Kira Markah",
+    button_style="success"
+)
+
+# Fungsi
+def kira(b):
+
+    with output:
+
+        clear_output()
+
+        jumlah = matematik.value + sains.value + english.value
+        purata = jumlah / 3
+
+        # Tentukan gred
+        if purata >= 80:
+            gred = "A"
+            status = "CEMERLANG"
+
+        elif purata >= 60:
+            gred = "B"
+            status = "LULUS"
+
+        elif purata >= 50:
+            gred = "C"
+            status = "LULUS"
+
+        else:
+            gred = "F"
+            status = "GAGAL"
+
+        # Papar Slip
+        print("="*40)
+        print("     SLIP KEPUTUSAN PELAJAR")
+        print("="*40)
+        print(f"Nama       : {nama.value}")
+        print(f"Matematik  : {matematik.value}")
+        print(f"Sains      : {sains.value}")
+        print(f"English    : {english.value}")
+        print("-"*40)
+        print(f"Jumlah     : {jumlah}")
+        print(f"Purata     : {purata:.2f}%")
+        print(f"Gred       : {gred}")
+        print(f"Status     : {status}")
+        print("="*40)
+
+        # Carta Bar
+        subjek = ["Matematik", "Sains", "English"]
+        markah = [
+            matematik.value,
+            sains.value,
+            english.value
+        ]
+
+        plt.figure(figsize=(7,4))
+
+        bars = plt.bar(subjek, markah)
+
+        plt.title("Prestasi Markah Pelajar")
+        plt.ylabel("Markah")
+        plt.ylim(0,100)
+
+        for bar in bars:
+            y = bar.get_height()
+
+            plt.text(
+                bar.get_x()+bar.get_width()/2,
+                y+1,
+                str(int(y)),
+                ha="center"
+            )
+
+        plt.show()
+
+button.on_click(kira)
+
+# Paparan
+display(
+    widgets.HTML("<h2>🎓 Sistem Kira Markah Pelajar</h2>"),
+    nama,
+    matematik,
+    sains,
+    english,
+    button,
+    output
+)
