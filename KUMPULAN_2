@@ -1,0 +1,42 @@
+import ipywidgets as widgets
+from IPython.display import display, HTML
+
+# Tajuk
+display(HTML("<h2 style='color:blue'>📊 Sistem Kira Markah Pelajar</h2>"))
+
+# Kotak input
+bm = widgets.FloatText(description='BM:')
+bi = widgets.FloatText(description='BI:')
+mt = widgets.FloatText(description='MATH:')
+
+# Butang
+btn = widgets.Button(description='Kira Markah', button_style='success')
+
+# Output
+output = widgets.Output()
+
+# Fungsi kira markah
+def kira_markah(b):
+
+    with output:
+        output.clear_output()
+
+        jumlah = bm.value + bi.value + mt.value
+        purata = jumlah / 3
+
+        if purata >= 80:
+            gred = "A"
+        elif purata >= 65:
+            gred = "B"
+        elif purata >= 50:
+            gred = "C"
+        else:
+            gred = "D"
+
+        print("📌 Jumlah Markah :", jumlah)
+        print("📌 Purata Markah :", round(purata,2))
+        print("📌 Gred :", gred)
+
+btn.on_click(kira_markah)
+
+display(bm, bi, mt, btn, output)
